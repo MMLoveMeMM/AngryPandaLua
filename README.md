@@ -6,3 +6,30 @@
 
 注意:
 多个lua文件的时候,在这个demo中,将assets中lua目录下lua文件拷贝到设备的sdcard目录下即可使用.
+
+多lua文件或者so加载和lua脚本程序加载:
+<1> : 多文件或者so加载是通过LdoFile()方法,并且还需要设置环境变量:
+private void loadLua(){
+    // 直接加载lua源码,这种方式适合加载少量的或者启动代码
+    // lua.LdoString(readAssetsTxt(this, "test.lua"));
+    // 这种可以批量加载代码
+    int ret = lua.LdoFile("/sdcard/libmodule.lua");
+    Log.d("LdoFile","ret : "+ret);
+    lua.LdoFile("/sdcard/test.lua");
+    initLuaPath(lua);
+}
+// 下面还要设置加载的环境变量
+private void initLuaPath(LuaState L) {
+    L.getGlobal("package");
+    L.pushString("/sdcard/libmodule.lua;");
+    L.setField(-2, "path");
+    /*L.pushString(getLuaCpath());
+    L.setField(-2, "cpath");*/
+}
+
+完整的加载多脚本方式可以参考luaDevAndroid工程.
+
+<2> : 仅仅是加载lua脚本程序,则使用LdoString,不过在生产环境下,仅仅加载脚本的方式应该非常少,使用
+也非常简单.
+
+
