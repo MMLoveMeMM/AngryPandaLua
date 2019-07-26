@@ -1,9 +1,13 @@
 package pumpkin.org.angrypandalua;
 
+import android.Manifest;
 import android.content.Context;
+import android.content.pm.PackageManager;
 import android.graphics.Color;
+import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
@@ -23,12 +27,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private TextView mText;
 
     private Button mBtn;
+    private Button mLoadBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         mText = (TextView) findViewById(R.id.text);
+
+        if (!isCheckPermission()) {
+            requestPermission();
+        }
 
         /**
          * 初始化lua
@@ -39,12 +48,47 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             return;
         }
         lua.openLibs();
-        lua.LdoString(readAssetsTxt(this, "test.lua"));
 
+        // 直接加载lua源码,这种方式适合加载少量的或者启动代码
+        // lua.LdoString(readAssetsTxt(this, "test.lua"));
+        // 这种可以批量加载代码
+        int ret = lua.LdoFile("/sdcard/libmodule.lua");
+        Log.d("LdoFile","ret : "+ret);
+        lua.LdoFile("/sdcard/test.lua");
+        initLuaPath(lua);
 
         mBtn = (Button) findViewById(R.id.func);
         mBtn.setOnClickListener(this);
 
+        mLoadBtn = (Button)findViewById(R.id.load);
+        mLoadBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                /**
+                 * 每次更新sdcard里面的lua文件
+                 */
+                loadLua();
+            }
+        });
+
+    }
+
+    private void loadLua(){
+        // 直接加载lua源码,这种方式适合加载少量的或者启动代码
+        // lua.LdoString(readAssetsTxt(this, "test.lua"));
+        // 这种可以批量加载代码
+        int ret = lua.LdoFile("/sdcard/libmodule.lua");
+        Log.d("LdoFile","ret : "+ret);
+        lua.LdoFile("/sdcard/test.lua");
+        initLuaPath(lua);
+    }
+
+    private void initLuaPath(LuaState L) {
+        L.getGlobal("package");
+        L.pushString("/sdcard/libmodule.lua;");
+        L.setField(-2, "path");
+        /*L.pushString(getLuaCpath());
+        L.setField(-2, "cpath");*/
     }
 
     @Override
@@ -53,13 +97,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int id = v.getId();
         switch (id){
             case R.id.func:{
-                // callLuaFunction();
+                callLuaFunction();
                 // pushJavaObj2Lua(mText);
                 // luaUsingJavaFunction();
                 // pushLuaVar("v2");
-                setLuaTable();
-                getLuaTable();
-                luaCallBackFromJava();
+                // setLuaTable();
+                //getLuaTable();
+                //luaCallBackFromJava();
             }
             default:
                 break;
@@ -117,6 +161,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lua.pushString("Hello lua");
         lua.setTable(-3);
         lua.setGlobal("table");
+        getLuaTable();
     }
 
     /**
@@ -126,10 +171,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
      */
     private void pushJavaObj2Lua(TextView textView){
         lua.pushJavaObject(textView);
-        lua.setGlobal("textView");
+        // luaText这个是textView在lua中对应的变量名
+        lua.setGlobal("luaText");
+        // 这个时候java对象可以在lua中使用了
         lua.pushInteger(Color.GREEN);
         lua.setGlobal("red");
-        lua.LdoString("textView:setTextColor(red)");
+        lua.LdoString("luaText:setTextColor(red)");
     }
 
     /**
@@ -196,6 +243,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             e.printStackTrace();
         }
         return "err";
+    }
+
+    private boolean isCheckPermission() {
+        return ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.READ_EXTERNAL_STORAGE) == PackageManager.PERMISSION_GRANTED;
+    }
+
+    private void requestPermission() {
+        ActivityCompat.requestPermissions(this, new String[]{
+                Manifest.permission.WRITE_EXTERNAL_STORAGE,
+                Manifest.permission.READ_EXTERNAL_STORAGE
+        }, 0x233);
     }
 
 }

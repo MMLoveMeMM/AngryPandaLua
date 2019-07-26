@@ -1,4 +1,5 @@
-
+-- import "libmodule"
+require("libmodule")
 v1 = "this is value from lua"
 
 table = {}
@@ -19,7 +20,8 @@ function extreme(a, b, c)
     elseif(c<min) then
         min = c
     end
-    --  max = libmodule.var
+    min = libmodule.var
+	max = libmodule.max(300,100)
     return max, min
 end
 
