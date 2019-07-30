@@ -50,13 +50,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lua.openLibs();
 
         // 直接加载lua源码,这种方式适合加载少量的或者启动代码
-        // lua.LdoString(readAssetsTxt(this, "test.lua"));
+        lua.LdoString(readAssetsTxt(this, "test.lua"));
 
         // 这种可以批量加载代码
-        int ret = lua.LdoFile("/sdcard/libmodule.lua");
+        /*int ret = lua.LdoFile("/sdcard/libmodule.lua");
         Log.d("LdoFile","ret : "+ret);
         lua.LdoFile("/sdcard/test.lua");
-        initLuaPath(lua);
+        initLuaPath(lua);*/
 
         mBtn = (Button) findViewById(R.id.func);
         mBtn.setOnClickListener(this);

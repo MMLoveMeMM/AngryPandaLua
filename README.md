@@ -33,3 +33,20 @@ private void initLuaPath(LuaState L) {
 也非常简单.
 
 
+整个lua使用的超级重点对象:
+LuaState
+
+工程有一个严重的bug修复:
+参考:https://github.com/jasonsantos/luajava/issues/10
+jni库中luajava.c中:
+int javaNew( lua_State * L )函数需要修改,否则luajava.new无法使用:
+修改的程序段如下:
+if ( /*clazz*/luajava_api_class == NULL || method == NULL )
+   {
+      lua_pushstring( L , "Invalid method org.keplerproject.luajava.LuaJavaAPI.javaNew." );
+      lua_error( L );
+   }
+
+   ret = ( *javaEnv )->CallStaticIntMethod( javaEnv , luajava_api_class/*clazz*/ , method , (jint)stateIndex , classInstance );
+
+将其中的class -> luajava_api_class
