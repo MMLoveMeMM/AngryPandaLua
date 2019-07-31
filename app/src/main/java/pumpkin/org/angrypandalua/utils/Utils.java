@@ -23,7 +23,6 @@ public class Utils {
 
     public static void getName(){
         Log.d(TAG,"your name is my name");
-        LuaManager.getInstance().getManager();
     }
 
 }
