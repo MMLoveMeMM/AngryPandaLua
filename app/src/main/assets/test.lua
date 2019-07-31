@@ -22,8 +22,8 @@ function extreme(a, b, c)
     local utilsobj = newClass(utils)
     utilsobj:getName()
 
-    --local util = newInstance("pumpkin.org.angrypandalua.utils.Utils")
-    -- util:getName()
+    local util = newInstance("pumpkin.org.angrypandalua.utils.Utils")
+    util:getName()
     -- local utilsobj = newClass(utils)
     -- utilsobj:getName()
 
@@ -43,6 +43,7 @@ function extreme(a, b, c)
     --local len = listObj:size()
     --print:show("list len : "+len)
 
+    -- 获取Map所有的参数
     local map = bindClass("java.util.HashMap");
     local mapObj = newClass(map)
     mapObj = testNew:testMap()
@@ -81,4 +82,18 @@ function luaCallback(tv)
             tv:setText(string.format("result: %s\ntime: %dms", result, time));
         end
     )
+end
+
+function luaCallByObject(datas)
+    local print = bindClass("pumpkin.org.angrypandalua.utils.Print")
+    print:show('luaCallByObject ... ...')
+    print:show(string.format("luaCallByObject Name = %s",datas:getName()))
+    print:show('luaCallByObject end ! ')
+end
+
+function luaArray(arr)
+    local print = bindClass("pumpkin.org.angrypandalua.utils.Print")
+    print:show('luaArray ... ...')
+    print:show(string.format("luaArray Name = %s",arr[1]))
+    print:show('luaArray end ! ')
 end

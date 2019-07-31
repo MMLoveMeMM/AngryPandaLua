@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
+import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaState;
 import org.keplerproject.luajava.LuaStateFactory;
 
@@ -20,6 +21,7 @@ import java.io.InputStream;
 
 import pumpkin.org.angrypandalua.lua.AsyncJavaFunction;
 import pumpkin.org.angrypandalua.lua.TestJavaFunction;
+import pumpkin.org.angrypandalua.utils.JavaObjects;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
@@ -98,13 +100,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         int id = v.getId();
         switch (id){
             case R.id.func:{
-                callLuaFunction();
+                // callLuaFunction();
                 // pushJavaObj2Lua(mText);
                 // luaUsingJavaFunction();
+                // getLuaVar("v1");
                 // pushLuaVar("v2");
                 // setLuaTable();
                 //getLuaTable();
                 //luaCallBackFromJava();
+                callLuaFunctionByObject();
             }
             default:
                 break;
@@ -192,7 +196,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         lua.LdoString("return getTime(' - passing by lua')");
         mText.setText(lua.toString(-1));
         lua.pop(1);
-
     }
 
     /**
@@ -218,6 +221,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
          */
         s.append("max : " + lua.toString(-2)+"  min : "+lua.toString(-1));
         mText.setText(s);
+    }
+
+    /**
+     * java调用Lua方法
+     */
+    private void callLuaFunctionByObject(){
+        StringBuilder s = new StringBuilder();
+        runFunc(lua,"extreme",15.6,0.8,189);
+        s.append("max : " + lua.toString(-2)+"  min : "+lua.toString(-1));
+        mText.setText(s);
+
+        /**
+         * 传递java对象
+         */
+        JavaObjects obj=new JavaObjects();
+        obj.setName("liuzhibao hello");
+        runFunc(lua,"luaCallByObject",obj);
+        /**
+         * 传递java数组
+         */
+        String[] names=new String[]{"liuzhibao","liming","wangfeng"};
+        runFunc(lua,"luaArray",names);
     }
 
     private void luaCallBackFromJava(){
@@ -258,6 +283,51 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 Manifest.permission.WRITE_EXTERNAL_STORAGE,
                 Manifest.permission.READ_EXTERNAL_STORAGE
         }, 0x233);
+    }
+
+    //运行lua函数
+    public Object runFunc(LuaState L, String funcName, Object... args) {
+        try {
+            L.setTop(0);
+            L.getGlobal(funcName);
+            if (L.isFunction(-1)) {
+                L.getGlobal("debug");
+                L.getField(-1, "traceback");
+                L.remove(-2);
+                L.insert(-2);
+                int argsLength = args.length;
+                for (Object arg : args) {
+                    L.pushObjectValue(arg);
+                }
+                int ok = L.pcall(argsLength, 1, -2 - argsLength);
+                if (ok == 0) {
+                    return L.toJavaObject(-1);
+                }
+                throw new LuaException(errorReason(ok) + ": " + L.toString(-1));
+            }
+        } catch (LuaException e) {
+            // LuaLog.e(e);
+        }
+        return null;
+    }
+
+    //生成错误信息
+    private String errorReason(int error) {
+        switch (error) {
+            case 6:
+                return "error error";
+            case 5:
+                return "GC error";
+            case 4:
+                return "Out of memory";
+            case 3:
+                return "Syntax error";
+            case 2:
+                return "Runtime error";
+            case 1:
+                return "Yield error";
+        }
+        return "Unknown error " + error;
     }
 
 }
