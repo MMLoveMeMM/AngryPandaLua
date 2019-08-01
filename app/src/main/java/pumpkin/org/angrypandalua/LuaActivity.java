@@ -105,19 +105,19 @@ public class LuaActivity extends AppCompatActivity {
         /**
          * 暂时不考虑使用assets目录下lua文件
          */
-        /*try {
+        try {
             String outputDir = luaManager.getLuaDir();
-            String[] files = getAssets().list("lua");
+            String[] files = getAssets().list("script");
             if (files == null) {
                 return;
             }
             for (String file : files) {
-                copyFile(getAssets().open("lua/" + file), outputDir + "/" + file);
+                copyFile(getAssets().open("script/" + file), outputDir + "/" + file);
             }
             luaManager.appendLuaDir(L, outputDir);
         } catch (IOException e) {
             e.printStackTrace();
-        }*/
+        }
     }
 
     public static void copyFile(InputStream inStream, String newPath) throws IOException {
