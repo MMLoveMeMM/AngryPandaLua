@@ -7,9 +7,12 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.Pair;
 import android.view.View;
 import android.widget.Button;
 
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.keplerproject.luajava.LuaException;
 import org.keplerproject.luajava.LuaManager;
 import org.keplerproject.luajava.LuaState;
@@ -18,15 +21,23 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.Map;
 
-public class LuaActivity extends AppCompatActivity {
+import pumpkin.org.angrypandalua.utils.ILogicListener;
+import pumpkin.org.angrypandalua.utils.Logic;
+
+public class LuaActivity extends AppCompatActivity implements View.OnClickListener,ILogicListener {
 
     private static final String TAG = LuaActivity.class.getName();
 
     private LuaState L;
     private LuaManager luaManager;
     private Button mBtn;
-
+    private JSONObject mJson;
+    private Map<String,String> maps;
+    private ArrayList<String> lists;
+    private Pair<String,String> pairs;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -36,21 +47,40 @@ public class LuaActivity extends AppCompatActivity {
             requestPermission();
         }
 
+        pairs=new Pair<>("name","liuzhibao");
+
+        mJson = new JSONObject();
+
+        String hello = "125.25.26";
+        hello.split(".");
+
         mBtn=(Button)findViewById(R.id.btn);
-        mBtn.setOnClickListener(new View.OnClickListener() {
+        mBtn.setOnClickListener(this);
+        /*mBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                try {
+                    mJson.put("name","liuzhibao");
+                    JSONObject mSubJson = new JSONObject();
+                    mSubJson.put("year","100");
+                    mJson.put("old",mSubJson);
+                    Log.d(TAG,"json : "+mJson.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
                 try {
                     if (L == null) {
                         initLuaEnv();
                     }
                     luaManager.doFile(L, getSDPath()+"/test.lua");
-                    luaManager.runFunc(L, "extreme",10.2,20.0,250);
+                    luaManager.runFunc(L, "extreme",10.2,20.0,250,new Logic());
                 } catch (LuaException e) {
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
         initLuaEnv();
 
@@ -111,10 +141,58 @@ public class LuaActivity extends AppCompatActivity {
             if (files == null) {
                 return;
             }
-            for (String file : files) {
-                copyFile(getAssets().open("script/" + file), outputDir + "/" + file);
+            /*for (String file : files) {
+                if(file.contains(".lua")) {
+                    copyFile(getAssets().open("script/" + file), outputDir + "/" + file);
+                }
             }
             luaManager.appendLuaDir(L, outputDir);
+
+            files = getAssets().list("script/base");
+            if (files == null) {
+                return;
+            }
+            for (String file : files) {
+                if(file.contains(".lua")) {
+                    copyFile(getAssets().open("script/base/" + file), outputDir + "/" + file);
+                }
+            }*/
+            /*for (String file : files) {
+                if(file.contains(".lua")) {
+                    copyFile(getAssets().open("script/" + file), outputDir + "/" + file);
+                }else{
+                    String[] subfiles = getAssets().list("script/"+file);
+                    if (subfiles == null) {
+                        return;
+                    }
+                    for(String subf:subfiles) {
+                        if (subf.contains(".lua")) {
+                            copyFile(getAssets().open("script/"+file+"/" + subf), outputDir + "/" + subf);
+                        }
+                    }
+                }
+            }*/
+            copyLuaFiles("script",files);
+            luaManager.appendLuaDir(L, outputDir);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void copyLuaFiles(String root,String[] files) {
+        if(files == null){
+            return;
+        }
+        String outputDir = luaManager.getLuaDir();
+        try {
+            for (String file : files) {
+                if (file.contains(".lua")) {
+                    copyFile(getAssets().open(root+"/" + file), outputDir + "/" + file);
+                } else {
+                    String[] subfiles = getAssets().list(root+"/" + file);
+                    copyLuaFiles(root+"/" + file,subfiles);
+                }
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -132,4 +210,35 @@ public class LuaActivity extends AppCompatActivity {
         inStream.close();
     }
 
+    @Override
+    public void onClick(View v) {
+        try {
+            mJson.put("name","liuzhibao");
+            JSONObject mSubJson = new JSONObject();
+            mSubJson.put("year","100");
+            mJson.put("old",mSubJson);
+            Log.d(TAG,"json : "+mJson.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (L == null) {
+                initLuaEnv();
+            }
+            luaManager.doFile(L, getSDPath()+"/test.lua");
+            luaManager.runFunc(L, "extreme",10.2,20.0,250,new Logic(),this);
+        } catch (LuaException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showLuaActivity(){
+        Log.d(TAG,"this is show LuaActivity !");
+    }
+
+    @Override
+    public void onLogicListener() {
+        Log.d(TAG,"this is show onLogicListener !");
+    }
 }

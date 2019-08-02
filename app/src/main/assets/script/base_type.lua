@@ -21,6 +21,10 @@ function base_type:print_show(info)	-- 定义一个成员函数 base_type:print_
     print(info)
 end
 
+function base_type:print_show(info1,info2)	-- 定义一个成员函数 base_type:print_x
+    print(info2)
+end
+
 function base_type:hello()	-- 定义另一个成员函数 base_type:hello
     print("hello base_type")
 end

@@ -1,18 +1,65 @@
-local bindClass = luajava.bindClass
-local newClass = luajava.new
-local newInstance = luajava.newInstance
+--local bindClass = luajava.bindClass
+--local newClass = luajava.new
+--local newInstance = luajava.newInstance
 v1 = "this is value from lua"
 
 table = {}
 table["name"] = "Lily"
 table["age"] = 18
 table["sex"] = "female"
+require "imports"
 require "shape"
 require "circle"
 require "testbase"
-function extreme(a, b, c)
+require "constants"
+require "json"
+require "stringj"
+require "mapj"
+require "listj"
+require "pairj"
+require "doublej"
 
+function extreme(a, b, c,logic,activity)
+
+    -- luapair.createPair()
+
+    -- lualist.createList()
+
+    -- luamap.createMap()
+
+    luastring.createString()
+
+    -- local mLogic =  bindClass("pumpkin.org.angrypandalua.utils.Logic")
+    -- local hlogic = newClass(mLogic)
+    -- local hlogic = newInstance("pumpkin.org.angrypandalua.utils.Logic")
+    -- print(hlogic.params)
+
+    luadouble.createDouble()
+    print(logic.params)
+    logic:helloBase();
+    logic.mControl:send();
+    logic:hello();
+
+    logic:showArgs("hello1","hello2");
+
+    local datas = logic:getLogicDatas();
+    print(datas:getName());
+    logic:addListener(activity);
+
+    gLogic = logic
+
+    activity:showLuaActivity();
+
+    local hel="zhibao.liu"
+    if("zhibao.liu"==hel) then
+        print("string equal !")
+    end
+
+    luajson.createJson()
     -- local String = bindClass("java.lang.String")
+    local info = newClass(String,"I am string !")
+    print(info)
+    print(string.format("EVENT_PLAY_TTS : %d",EVENT_PLAY_TTS))
     print("-----------------------------------------------------")
     local print = bindClass("pumpkin.org.angrypandalua.utils.Print")
     print:debug()
@@ -75,8 +122,10 @@ function extreme(a, b, c)
 
     -- 下面解决调用基类的方法
     a=test.new(1)	-- 输出两行，base_type ctor 和 test ctor 。这个对象被正确的构造了。
-    a:print_x()	-- 输出 1 ，这个是基类 base_type 中的成员函数。
+    -- a:print_x()	-- 输出 1 ，这个是基类 base_type 中的成员函数。
+    usObj(a)
     a:print_show("liuzhibao using base class")
+    a:print_show("liuzhibao using base class 1","liuzhibao using base class 2")
     a:hello()
 
     local max = a
@@ -93,6 +142,10 @@ function extreme(a, b, c)
     end
 
     return max, min
+end
+
+function usObj(fuc)
+    fuc:print_x()
 end
 
 function luaCallback(tv)
