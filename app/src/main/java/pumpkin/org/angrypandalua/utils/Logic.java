@@ -11,7 +11,9 @@ import android.util.Log;
  */
 public class Logic extends BaseLogic {
 
-    public String params = "this world is very good !";
+    protected String params = "this world is very good !";
+
+    private LogicDatas mLogicDatas;
 
     public Logic() {
         mControl = new Control();
@@ -24,11 +26,17 @@ public class Logic extends BaseLogic {
     }
 
     public void showArgs(String[]... args) {
-
         if (args != null && args.length > 0) {
             Log.d("Logic", "args[0] : " + args[0]);
         }
+    }
 
+    public void setParams(String params) {
+        this.params = params;
+    }
+
+    public String getParams(){
+        return params;
     }
 
     public void hello() {
@@ -41,7 +49,14 @@ public class Logic extends BaseLogic {
         return datas;
     }
 
+    public void setLogicDatas(LogicDatas logicDatas) {
+        this.mLogicDatas = logicDatas;
+        Log.d("Logic","name : "+logicDatas.getName());
+    }
+
     public void addListener(ILogicListener listener) {
-        listener.onLogicListener();
+        LogicDatas datas=new LogicDatas();
+        datas.setName("Lua is good LuaActivity !");
+        listener.onLogicListener(datas);
     }
 }

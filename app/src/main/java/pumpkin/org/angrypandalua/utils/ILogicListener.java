@@ -9,6 +9,6 @@ package pumpkin.org.angrypandalua.utils;
  */
 public interface ILogicListener {
 
-    void onLogicListener();
+    void onLogicListener(LogicDatas datas);
 
 }

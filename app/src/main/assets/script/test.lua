@@ -18,8 +18,24 @@ require "mapj"
 require "listj"
 require "pairj"
 require "doublej"
+require "callback"
+require "intergerj"
+require "triangle"
 
-function extreme(a, b, c,logic,activity)
+function extreme(a, b, c,logic,activity,logicDatas)
+
+
+    logic:setLogicDatas(logicDatas);
+    logicDatas:showCity();
+    local city = logicDatas:getCity();
+    print(city)
+    -- lualist.createList()
+
+    -- hellomodule();
+
+    -- luainteger.createInteger()
+
+    -- luacallback.createCallBack(activity)
 
     -- luapair.createPair()
 
@@ -27,20 +43,34 @@ function extreme(a, b, c,logic,activity)
 
     -- luamap.createMap()
 
-    luastring.createString()
-
+    -- 不支持不定参数个数的方法
+    local bol = luastring.createString()
+    if(bol)then
+        print("string return true !")
+    else
+        print("string return false !")
+    end
     -- local mLogic =  bindClass("pumpkin.org.angrypandalua.utils.Logic")
     -- local hlogic = newClass(mLogic)
     -- local hlogic = newInstance("pumpkin.org.angrypandalua.utils.Logic")
     -- print(hlogic.params)
 
+    helloinfo = "I am hello info !"
+    showselfp();
+    logic:addListener(activity);
     luadouble.createDouble()
     print(logic.params)
+    -- 不能够直接赋值
+    -- logic.params="lua update params"
+    logic:setParams("lua update params");
+    local newparams = logic:getParams();
+    print(newparams);
+
     logic:helloBase();
     logic.mControl:send();
     logic:hello();
-
-    logic:showArgs("hello1","hello2");
+    -- 不支持不定参数个数的方法
+    -- logic:showArgs("hello1","hello2");
 
     local datas = logic:getLogicDatas();
     print(datas:getName());
@@ -109,6 +139,10 @@ function extreme(a, b, c,logic,activity)
     end
 
     print:show("++++++++++++++++++++++++++++++++++++++++++++++++++++++++")
+
+    Triangle:new(nil)
+    print:show("+++++++++++++++++++++++Triangle end+++++++++++++++++++++++++++")
+
     myshape = Shape:new(nil,10)
     myshape:printArea()
 
@@ -144,6 +178,10 @@ function extreme(a, b, c,logic,activity)
     return max, min
 end
 
+function hellomodule()
+    print("this is hello test module !")
+end
+
 function usObj(fuc)
     fuc:print_x()
 end
@@ -155,6 +193,10 @@ function luaCallback(tv)
             tv:setText(string.format("result: %s\ntime: %dms", result, time));
         end
     )
+end
+
+function showselfp()
+    print(helloinfo)
 end
 
 function luaCallByObject(datas)

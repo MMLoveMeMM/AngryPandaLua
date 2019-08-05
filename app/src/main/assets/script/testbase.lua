@@ -12,8 +12,11 @@ function test:ctor()	-- 定义 test 的构造函数
     print("test ctor")
 end
 
+function test:print_show(dd)
+    print(dd)
+end
 function test:hello()	-- 重载 base_type:hello 为 test:hello
-    self:print_show("super method")
+    self:print_show("liuzhibao self method")
     print("hello test")
 end
 

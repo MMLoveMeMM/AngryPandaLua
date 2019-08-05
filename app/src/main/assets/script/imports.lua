@@ -11,5 +11,6 @@ newInstance = luajava.newInstance
 createProxy = luajava.createProxy
 
 String = bindClass("java.lang.String")
+android_R = bindClass("android.R")
 
 gLogic=nil

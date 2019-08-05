@@ -26,6 +26,7 @@ import java.util.Map;
 
 import pumpkin.org.angrypandalua.utils.ILogicListener;
 import pumpkin.org.angrypandalua.utils.Logic;
+import pumpkin.org.angrypandalua.utils.LogicDatas;
 
 public class LuaActivity extends AppCompatActivity implements View.OnClickListener,ILogicListener {
 
@@ -53,6 +54,8 @@ public class LuaActivity extends AppCompatActivity implements View.OnClickListen
 
         String hello = "125.25.26";
         hello.split(".");
+
+        Integer in;
 
         mBtn=(Button)findViewById(R.id.btn);
         mBtn.setOnClickListener(this);
@@ -227,7 +230,10 @@ public class LuaActivity extends AppCompatActivity implements View.OnClickListen
                 initLuaEnv();
             }
             luaManager.doFile(L, getSDPath()+"/test.lua");
-            luaManager.runFunc(L, "extreme",10.2,20.0,250,new Logic(),this);
+            LogicDatas datas=new LogicDatas();
+            datas.setName("this name is show in logic class");
+            datas.setCity("shenzhen");
+            luaManager.runFunc(L, "extreme",10.2,20.0,250,new Logic(),this,datas);
         } catch (LuaException e) {
             e.printStackTrace();
         }
@@ -238,7 +244,13 @@ public class LuaActivity extends AppCompatActivity implements View.OnClickListen
     }
 
     @Override
-    public void onLogicListener() {
+    public void onLogicListener(LogicDatas datas) {
         Log.d(TAG,"this is show onLogicListener !");
+    }
+
+    public void addActionListener(ILogicListener listener){
+        LogicDatas datas=new LogicDatas();
+        datas.setName("Lua is good script!");
+        listener.onLogicListener(datas);
     }
 }

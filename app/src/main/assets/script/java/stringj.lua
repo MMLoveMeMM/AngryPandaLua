@@ -14,6 +14,10 @@ function luastring.createString()
     ---local String = bindClass("java.lang.String")
     ---local info = newClass(String,"123.251.254.485")
 
+    lzb = "this is global veriable"
+    if(lzb == LIUZHIBAO)then
+        print("string is equal !")
+    end
     print(LIUZHIBAO)
 
     local javaString = bindClass("pumpkin.org.angrypandalua.utils.JavaString")
@@ -26,6 +30,11 @@ function luastring.createString()
     --    print(tostring("hello this is tostring !"))
     -- end
     luastring.showList(list)
+    local hellonil
+    if(hellonil == nil)then
+        print("hellonil is nil")
+    end
+    return false
 end
 
 function luastring.showList(list)

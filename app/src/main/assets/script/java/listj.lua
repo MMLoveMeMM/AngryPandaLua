@@ -16,11 +16,20 @@ function lualist.createList()
     list:add("liuzhibao")
     list:add("lilei")
     print(string.format("list : %s",list:get(0)))
-    lualist.createList(list)
+    -- lualist.showList(list)
+    hello_showList(list);
 end
 
-function lualist.createList(list)
+function lualist.showList(list)
     -- 遍历整个List
+    local it = list:iterator();
+    while(it:hasNext()) do
+        print(it:next())
+    end
+end
+
+function hello_showList(list)
+    print("this is hello_showlist")
     local it = list:iterator();
     while(it:hasNext()) do
         print(it:next())
