@@ -86,7 +86,7 @@ public class LuaActivity extends AppCompatActivity implements View.OnClickListen
         });*/
 
         initLuaEnv();
-
+        click();
     }
 
     private String getSDPath(){
@@ -215,6 +215,31 @@ public class LuaActivity extends AppCompatActivity implements View.OnClickListen
 
     @Override
     public void onClick(View v) {
+        try {
+            mJson.put("name","liuzhibao");
+            JSONObject mSubJson = new JSONObject();
+            mSubJson.put("year","100");
+            mJson.put("old",mSubJson);
+            Log.d(TAG,"json : "+mJson.toString());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        try {
+            if (L == null) {
+                initLuaEnv();
+            }
+            luaManager.doFile(L, getSDPath()+"/test.lua");
+            LogicDatas datas=new LogicDatas();
+            datas.setName("this name is show in logic class");
+            datas.setCity("shenzhen");
+            luaManager.runFunc(L, "extreme",10.2,20.0,250,new Logic(),this,datas);
+        } catch (LuaException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void click(){
         try {
             mJson.put("name","liuzhibao");
             JSONObject mSubJson = new JSONObject();

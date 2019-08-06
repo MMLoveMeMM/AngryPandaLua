@@ -24,16 +24,17 @@ require "triangle"
 
 function extreme(a, b, c,logic,activity,logicDatas)
 
-    JavaInstance = bindClass("pumpkin.org.angrypandalua.utils.JavaInstance")
-    local ins1 = JavaInstance:getInstance();
-    ins1:sayHello();
+    -- JavaInstance = bindClass("pumpkin.org.angrypandalua.utils.JavaInstance")
+    -- local ins1 = JavaInstance:getInstance();
+    -- ins1:sayHello();
 
-    local ins = JavaInstance.ourInstance;
-    ins:sayHello();
+    -- local ins = JavaInstance.ourInstance;
+    -- ins:sayHello();
     -- JavaInstance:sayHello();
 
-    hellomodule();
+    -- hellomodule();
 
+    print("-------------------------------------")
     acc=test.new();	-- 输出两行，base_type ctor 和 test ctor 。这个对象被正确的构造了。
     acc:print_show("this is sub class print show");
     acc:print_show("show one","show two");

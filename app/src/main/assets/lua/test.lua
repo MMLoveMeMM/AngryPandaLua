@@ -8,6 +8,7 @@ table["age"] = 18
 table["sex"] = "female"
 
 function extreme(a, b, c)
+    log("hell ---------------------------------------------")
     local max = a
     local min = a
     if(b>max) then
