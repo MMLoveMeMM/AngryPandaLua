@@ -29,3 +29,7 @@ function base_type:hello()	-- 定义另一个成员函数 base_type:hello
     print("hello base_type")
 end
 
+function base_type:jf()
+    print("jf jf jf jf")
+end
+

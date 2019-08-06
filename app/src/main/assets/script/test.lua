@@ -24,11 +24,24 @@ require "triangle"
 
 function extreme(a, b, c,logic,activity,logicDatas)
 
+    JavaInstance = bindClass("pumpkin.org.angrypandalua.utils.JavaInstance")
+    local ins1 = JavaInstance:getInstance();
+    ins1:sayHello();
 
-    logic:setLogicDatas(logicDatas);
-    logicDatas:showCity();
-    local city = logicDatas:getCity();
-    print(city)
+    local ins = JavaInstance.ourInstance;
+    ins:sayHello();
+    -- JavaInstance:sayHello();
+
+    hellomodule();
+
+    acc=test.new();	-- 输出两行，base_type ctor 和 test ctor 。这个对象被正确的构造了。
+    acc:print_show("this is sub class print show");
+    acc:print_show("show one","show two");
+    acc:jf();
+    -- logic:setLogicDatas(logicDatas);
+    -- logicDatas:showCity();
+    -- local city = logicDatas:getCity();
+    -- print(city)
     -- lualist.createList()
 
     -- hellomodule();
@@ -155,12 +168,12 @@ function extreme(a, b, c,logic,activity,logicDatas)
     -- 无法调用基类的方法,主要原因是子类创建的时候不会构建基类,mycircle:basePrint()
 
     -- 下面解决调用基类的方法
-    a=test.new(1)	-- 输出两行，base_type ctor 和 test ctor 。这个对象被正确的构造了。
+    -- a=test.new(1)	-- 输出两行，base_type ctor 和 test ctor 。这个对象被正确的构造了。
     -- a:print_x()	-- 输出 1 ，这个是基类 base_type 中的成员函数。
-    usObj(a)
-    a:print_show("liuzhibao using base class")
-    a:print_show("liuzhibao using base class 1","liuzhibao using base class 2")
-    a:hello()
+    -- usObj(a)
+    -- a:print_show("liuzhibao using base class")
+    -- a:print_show("liuzhibao using base class 1","liuzhibao using base class 2")
+    -- a:hello()
 
     local max = a
     local min = a

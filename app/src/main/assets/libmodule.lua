@@ -9,7 +9,11 @@ function libmodule.max(n1,n2)
   else
     return n2;
   end
-   
+
+end
+
+function hellomodule()
+  print("this is hello module !")
 end
 
 return libmodule
