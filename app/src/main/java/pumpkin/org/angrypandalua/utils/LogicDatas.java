@@ -1,5 +1,7 @@
 package pumpkin.org.angrypandalua.utils;
 
+import android.util.Log;
+
 /**
  * @ProjectName: AngryPandaLua
  * @ClassName: LogicDatas
@@ -24,4 +26,8 @@ public class LogicDatas extends BaseLogicDatas{
         return super.getCity();
     }
 
+    @Override
+    public void showCity() {
+        Log.d("LogicDatas","showCity : "+getCity());
+    }
 }

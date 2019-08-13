@@ -22,7 +22,16 @@ require "callback"
 require "intergerj"
 require "triangle"
 
-function extreme(a, b, c,logic,activity,logicDatas)
+function showList(list)
+    -- 遍历整个List
+    local it = list:iterator();
+    while(it:hasNext()) do
+        local data = it:next();
+        data:showCity();
+    end
+end
+
+function extreme(a, b, c,logic,activity,list00)
 
     -- JavaInstance = bindClass("pumpkin.org.angrypandalua.utils.JavaInstance")
     -- local ins1 = JavaInstance:getInstance();
@@ -33,6 +42,8 @@ function extreme(a, b, c,logic,activity,logicDatas)
     -- JavaInstance:sayHello();
 
     -- hellomodule();
+
+    showList(list00);
 
     print("-------------------------------------")
     acc=test.new();	-- 输出两行，base_type ctor 和 test ctor 。这个对象被正确的构造了。
@@ -112,7 +123,7 @@ function extreme(a, b, c,logic,activity,logicDatas)
     -- log("hello world !")
     local utils = bindClass("pumpkin.org.angrypandalua.utils.Utils")
     utils:getVersion()
-    local utilsobj = newClass(utils)
+    local utilsobj = newClass(javaUtils--[[utils]])
     utilsobj:getName()
 
     local util = newInstance("pumpkin.org.angrypandalua.utils.Utils")

@@ -22,10 +22,14 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
+import pumpkin.org.angrypandalua.utils.BaseLogicDatas;
 import pumpkin.org.angrypandalua.utils.ILogicListener;
 import pumpkin.org.angrypandalua.utils.Logic;
+import pumpkin.org.angrypandalua.utils.Logic1Datas;
+import pumpkin.org.angrypandalua.utils.Logic2Datas;
 import pumpkin.org.angrypandalua.utils.LogicDatas;
 
 public class LuaActivity extends AppCompatActivity implements View.OnClickListener,ILogicListener {
@@ -231,9 +235,20 @@ public class LuaActivity extends AppCompatActivity implements View.OnClickListen
             }
             luaManager.doFile(L, getSDPath()+"/test.lua");
             LogicDatas datas=new LogicDatas();
-            datas.setName("this name is show in logic class");
+            datas.setName("this name is show in logic class0");
             datas.setCity("shenzhen");
-            luaManager.runFunc(L, "extreme",10.2,20.0,250,new Logic(),this,datas);
+            LogicDatas datas1=new LogicDatas();
+            datas1.setName("this name is show in logic class1");
+            datas1.setCity("shanghai");
+            Logic1Datas datas2=new Logic1Datas();
+            datas2.setCity("beijing");
+            Logic2Datas datas3=new Logic2Datas();
+            datas3.setCity("guangzhou");
+            List<BaseLogicDatas> list=new ArrayList<>(20);
+            list.add(datas);
+            list.add(datas1);
+            list.add(datas2);
+            luaManager.runFunc(L, "extreme",10.2,20.0,250,new Logic(),this,list);
         } catch (LuaException e) {
             e.printStackTrace();
         }
